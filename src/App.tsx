@@ -1,10 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import * as React from "react";
+import logo from "./logo.svg";
+import "./App.css";
+
+enum SocketStatus {
+  initial = "initial",
+  open = "open",
+  error = "error",
+  close = "close",
+}
 
 function App() {
+  const [status, setStatus] = React.useState<SocketStatus>(
+    SocketStatus.initial
+  );
+  React.useEffect(() => {
+    const socket = new WebSocket("ws://localhost:5000");
+
+    socket.onopen = () => setStatus(SocketStatus.open);
+    socket.onerror = () => setStatus(SocketStatus.error);
+  }, []);
+
   return (
     <div className="App">
+      SOCKET_STATUS:::::{status}
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
