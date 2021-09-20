@@ -20,6 +20,13 @@ const useStyles = makeStyles((theme) =>
       marginBottom: theme.spacing(4),
       width: 72,
     },
+    textField: {
+      width: 300,
+      marginTop: theme.spacing(2),
+    },
+    button: {
+      marginTop: theme.spacing(2),
+    },
   })
 );
 
