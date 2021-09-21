@@ -13,7 +13,7 @@ const MainPage: React.FC = () => {
   const dispatch = useAppDispatch();
 
   React.useEffect(() => {
-    dispatch(wsConnect({ host: 'ws://localhost:5000' }));
+    dispatch(wsConnect({ host: process.env.REACT_APP_WS_URL || '' }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

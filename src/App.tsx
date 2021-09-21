@@ -6,6 +6,7 @@ import NotFoundPage from 'pages/NotFound';
 import DefaultLayout from 'layouts/DefaultLayout';
 import routes from 'routes';
 import MainPage from 'pages/MainPage';
+import AuthPage from 'pages/AuthPage';
 
 // #5FAF2D - logo color
 const theme = createTheme({});
@@ -17,6 +18,7 @@ const App: React.FC<IApp> = (): ReactElement => (
     <StylesProvider injectFirst>
       <DefaultLayout>
         <Switch>
+          <Route exact path={routes.auth()} component={AuthPage} />
           <Route exact path={routes.main()} component={MainPage} />
           <Route component={NotFoundPage} />
         </Switch>

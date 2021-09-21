@@ -2,8 +2,8 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const proxies = [
   {
-    target: process.env.REACT_APP_API_ITEMS_URL,
-    url: '/api/items',
+    target: process.env.REACT_APP_API_URL,
+    url: '/api/chat',
   },
 ];
 
