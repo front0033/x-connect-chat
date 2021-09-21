@@ -2,7 +2,7 @@ import { BaseQueryFn } from '@reduxjs/toolkit/query';
 import axios, { AxiosRequestConfig, AxiosError } from 'axios';
 import { setError } from 'redux/stores/apiErrors/errorSlice';
 
-export const PROXY_URL = '/api/certificates';
+export const PROXY_URL = '/api/chat';
 
 export const statusErrors: Record<string | number, string> = {
   401: 'Ошибка авторизации (401)',

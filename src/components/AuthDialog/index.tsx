@@ -19,6 +19,7 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
+import { Alert } from '@material-ui/lab';
 import * as yup from 'yup';
 import { Formik } from 'formik';
 import { useSelector } from 'react-redux';
@@ -56,7 +57,7 @@ const AuthDialog: React.FC<IAuthDialogProps> = () => {
   const classes = useStyles();
   const [showPassword, setShowPassword] = React.useState(false);
   const dispatch = useAppDispatch();
-  const [login, { isLoading }] = useLoginMutation();
+  const [login, { isLoading, isError }] = useLoginMutation();
   const { user } = useSelector((state: RootState) => state.auth);
 
   const handleClickShowPassword = () => {
@@ -135,11 +136,11 @@ const AuthDialog: React.FC<IAuthDialogProps> = () => {
                       error={touched.password && !!errors.password}
                     />
                   </FormControl>
-                  {/* {false && (
+                  {isError && (
                     <Alert className={classes.errorAlert} severity="error">
                       Неправильный логин или пароль
                     </Alert>
-                  )} */}
+                  )}
                 </Grid>
               </DialogContent>
               <DialogActions className={classes.actions}>

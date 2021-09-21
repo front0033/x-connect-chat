@@ -1,5 +1,5 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import baseApiClient from 'api/baseApiClient';
+import baseApiClient, { PROXY_URL } from 'api/baseApiClient';
 
 export interface User {
   name: string;
@@ -17,11 +17,11 @@ export interface LoginRequest {
 
 export const authApi = createApi({
   reducerPath: 'authApi',
-  baseQuery: baseApiClient({ baseUrl: '/api/chat' }),
+  baseQuery: baseApiClient({ baseUrl: PROXY_URL }),
   endpoints: (builder) => ({
     login: builder.mutation<UserResponse, LoginRequest>({
       query: (credentials) => ({
-        url: 'login',
+        url: '/api/auth',
         method: 'POST',
         data: credentials,
       }),
