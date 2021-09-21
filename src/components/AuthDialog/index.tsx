@@ -71,9 +71,8 @@ const AuthDialog: React.FC<IAuthDialogProps> = () => {
   const handleSubmitClick = async (values: IAuthDialogState) => {
     const { username, password } = values;
     const data = await login({ email: username, password }).unwrap();
-    if (data.user.name) {
-      dispatch(setCredentials({ user: { name: data.user.name }, token: data.token }));
-      localStorage.setItem('x5-processing-user', JSON.stringify({ user: { name: data.user.name }, token: data.token }));
+    if (data.token) {
+      dispatch(setCredentials({ user: { name: username }, token: data.token }));
     }
   };
 
