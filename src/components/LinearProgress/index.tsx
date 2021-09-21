@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 import { makeStyles, createStyles, Theme, Grid, LinearProgress as MUILinearProgress } from '@material-ui/core';
 
 interface ILazyPaginationProgressProps {

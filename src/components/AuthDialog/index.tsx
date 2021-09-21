@@ -24,9 +24,7 @@ import * as yup from 'yup';
 import { Formik } from 'formik';
 import { useSelector } from 'react-redux';
 import { RootState } from 'redux/store';
-import { useAppDispatch } from 'redux/hooks';
-import { useLoginMutation } from 'redux/stores/auth/authSlice';
-import { setCredentials } from 'redux/stores/user/userSlice';
+import { useLazyLoginQuery } from 'redux/stores/auth/authSlice';
 import { Redirect } from 'react-router-dom';
 import Progress from 'components/LinearProgress';
 import routes from 'routes';
@@ -53,12 +51,19 @@ const validationSchema: yup.SchemaOf<IAuthDialogState> = yup.object().shape({
   password: yup.string().required(REQUIRED_ERROR_MESSAGE),
 });
 
+export const X_CONNECT_LOCALSTORAGE_USER_KEY = 'X_CONNECT_CHAT_USER';
+
 const AuthDialog: React.FC<IAuthDialogProps> = () => {
   const classes = useStyles();
   const [showPassword, setShowPassword] = React.useState(false);
-  const dispatch = useAppDispatch();
-  const [login, { isLoading, isError }] = useLoginMutation();
+  const [login, { data, isLoading, isError, isSuccess }] = useLazyLoginQuery();
   const { user } = useSelector((state: RootState) => state.auth);
+
+  React.useEffect(() => {
+    if (data && isSuccess) {
+      localStorage.setItem(X_CONNECT_LOCALSTORAGE_USER_KEY, data.userId);
+    }
+  }, [data, isSuccess]);
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -70,10 +75,7 @@ const AuthDialog: React.FC<IAuthDialogProps> = () => {
 
   const handleSubmitClick = async (values: IAuthDialogState) => {
     const { username, password } = values;
-    const data = await login({ email: username, password }).unwrap();
-    if (data.token) {
-      dispatch(setCredentials({ user: { name: username }, token: data.token }));
-    }
+    login({ email: username, password });
   };
 
   return (

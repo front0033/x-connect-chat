@@ -2,11 +2,12 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 import baseApiClient, { PROXY_URL } from 'api/baseApiClient';
 
 export interface User {
-  name: string;
+  id: string;
 }
 
 export interface UserResponse {
-  token: string;
+  userId: string;
+  email: string;
 }
 
 export interface LoginRequest {
@@ -18,7 +19,15 @@ export const authApi = createApi({
   reducerPath: 'authApi',
   baseQuery: baseApiClient({ baseUrl: PROXY_URL }),
   endpoints: (builder) => ({
-    login: builder.mutation<UserResponse, LoginRequest>({
+    // получаем инфу о user
+    getUser: builder.query<User, LoginRequest>({
+      query: (credentials) => ({
+        url: '/api/auth',
+        method: 'GET',
+        data: credentials,
+      }),
+    }),
+    login: builder.query<UserResponse, LoginRequest>({
       query: (credentials) => ({
         url: '/api/auth',
         method: 'POST',
@@ -28,4 +37,4 @@ export const authApi = createApi({
   }),
 });
 
-export const { useLoginMutation } = authApi;
+export const { useGetUserQuery, useLazyGetUserQuery, useLazyLoginQuery, useLoginQuery } = authApi;
