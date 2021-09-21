@@ -53,4 +53,7 @@ export const profileApi = createApi({
   }),
 });
 
+// use with dispatch
+export const resetProfileApi = profileApi.util.resetApiState;
+
 export const { useCreateOrUpdateMutation, useGetProfileByUserIdQuery, useDeleteProfileQuery } = profileApi;

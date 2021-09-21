@@ -34,4 +34,7 @@ export const authApi = createApi({
   }),
 });
 
+// use with dispatch
+export const resetAuthApi = authApi.util.resetApiState;
+
 export const { useGetUserQuery, useLazyGetUserQuery, useLazyLoginQuery, useLoginQuery } = authApi;

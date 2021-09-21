@@ -27,4 +27,7 @@ export const userSlice = createApi({
   }),
 });
 
+// use with dispatch
+export const resetUserApi = userSlice.util.resetApiState;
+
 export const { useCreateUserMutation } = userSlice;
