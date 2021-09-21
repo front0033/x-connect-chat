@@ -22,8 +22,6 @@ import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import { Alert } from '@material-ui/lab';
 import * as yup from 'yup';
 import { Formik } from 'formik';
-import { useSelector } from 'react-redux';
-import { RootState } from 'redux/store';
 import { useLazyLoginQuery } from 'redux/stores/auth/authSlice';
 import { Redirect } from 'react-router-dom';
 import Progress from 'components/LinearProgress';
@@ -56,14 +54,13 @@ export const X_CONNECT_LOCALSTORAGE_USER_KEY = 'X_CONNECT_CHAT_USER';
 const AuthDialog: React.FC<IAuthDialogProps> = () => {
   const classes = useStyles();
   const [showPassword, setShowPassword] = React.useState(false);
-  const [login, { data, isLoading, isError, isSuccess }] = useLazyLoginQuery();
-  const { user } = useSelector((state: RootState) => state.auth);
+  const [login, { data: user, isLoading, isError, isSuccess }] = useLazyLoginQuery();
 
   React.useEffect(() => {
-    if (data && isSuccess) {
-      localStorage.setItem(X_CONNECT_LOCALSTORAGE_USER_KEY, data.userId);
+    if (user && isSuccess) {
+      localStorage.setItem(X_CONNECT_LOCALSTORAGE_USER_KEY, user.userId);
     }
-  }, [data, isSuccess]);
+  }, [user, isSuccess]);
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);

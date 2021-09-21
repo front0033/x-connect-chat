@@ -1,26 +1,30 @@
-/* eslint-disable no-param-reassign */
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { User } from '../auth/authSlice';
+import { createApi } from '@reduxjs/toolkit/query/react';
+import baseApiClient, { PROXY_URL } from 'api/baseApiClient';
 
-type AuthState = {
-  user: User | null;
-};
+export interface User {
+  userId: string;
+  email: string;
+  avatar: string;
+}
 
-export const userReducerPath = 'auth';
+export interface UserRequest {
+  email: string;
+  password: string;
+}
 
-const userSlice = createSlice({
-  name: userReducerPath,
-  initialState: { user: null, token: null } as AuthState,
-  reducers: {
-    setCredentials: (state, { payload: { user } }: PayloadAction<{ user: User }>) => {
-      state.user = user;
-    },
-    logout: (state) => {
-      state.user = null;
-    },
-  },
+export const userSlice = createApi({
+  reducerPath: 'userApi',
+  baseQuery: baseApiClient({ baseUrl: PROXY_URL }),
+  endpoints: (builder) => ({
+    // создаем нового юзера
+    createUser: builder.mutation<User, UserRequest>({
+      query: (credentials) => ({
+        url: '/api/user',
+        method: 'POST',
+        data: credentials,
+      }),
+    }),
+  }),
 });
 
-export const { setCredentials, logout } = userSlice.actions;
-
-export default userSlice.reducer;
+export const { useCreateUserMutation } = userSlice;

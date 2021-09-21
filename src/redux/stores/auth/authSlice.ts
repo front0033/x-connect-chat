@@ -1,18 +1,14 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import baseApiClient, { PROXY_URL } from 'api/baseApiClient';
-
-export interface User {
-  id: string;
-}
-
-export interface UserResponse {
-  userId: string;
-  email: string;
-}
+import { User } from '../user/userSlice';
 
 export interface LoginRequest {
   email: string;
   password: string;
+}
+
+export interface GetUserRequest {
+  userId: string;
 }
 
 export const authApi = createApi({
@@ -20,14 +16,15 @@ export const authApi = createApi({
   baseQuery: baseApiClient({ baseUrl: PROXY_URL }),
   endpoints: (builder) => ({
     // получаем инфу о user
-    getUser: builder.query<User, LoginRequest>({
-      query: (credentials) => ({
+    getUser: builder.query<User, GetUserRequest>({
+      query: (data) => ({
         url: '/api/auth',
         method: 'GET',
-        data: credentials,
+        data,
       }),
     }),
-    login: builder.query<UserResponse, LoginRequest>({
+    // авторизируемся по логину и паролю
+    login: builder.query<User, LoginRequest>({
       query: (credentials) => ({
         url: '/api/auth',
         method: 'POST',
