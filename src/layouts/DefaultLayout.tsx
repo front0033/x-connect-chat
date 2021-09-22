@@ -1,19 +1,42 @@
 import * as React from 'react';
 
-import { Box, AppBar, Grid, Typography, CssBaseline } from '@material-ui/core';
+import { Box, AppBar, Grid, Typography, CssBaseline, Button } from '@material-ui/core';
 import LockIcon from '@material-ui/icons/Lock';
+import { resetAuthApi, useLazyLogoutQuery } from 'redux/stores/auth/authSlice';
+import { resetUserApi } from 'redux/stores/user/userSlice';
+import { resetProfileApi } from 'redux/stores/userProfile/userProfileSlice';
+import X_CONNECT_LOCALSTORAGE_USER_KEY from 'components/AccessNavigator/constants';
+
 import useStyles from './styles';
 
 const DefaultLayout: React.FC = ({ children }) => {
   const classes = useStyles();
+
+  const [logout] = useLazyLogoutQuery();
+
+  const handleLogoutClick = () => {
+    logout();
+    resetAuthApi();
+    resetUserApi();
+    resetProfileApi();
+    localStorage.removeItem(X_CONNECT_LOCALSTORAGE_USER_KEY);
+  };
+
   return (
     <Box className={classes.root}>
       <AppBar className={classes.appBar} position="fixed" title="REACT APP" color="default">
-        <Grid className={classes.titleContainer} container wrap="nowrap" alignItems="center">
+        <Grid
+          className={classes.titleContainer}
+          container
+          wrap="nowrap"
+          alignItems="center"
+          justifyContent="space-between"
+        >
           <LockIcon />
           <Typography className={classes.title} variant="h6">
             X-CONNECT-CHAT
           </Typography>
+          <Button onClick={handleLogoutClick}>Выйти</Button>
         </Grid>
       </AppBar>
       <CssBaseline />

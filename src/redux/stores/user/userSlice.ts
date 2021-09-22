@@ -5,6 +5,8 @@ export interface User {
   userId: string;
   email: string;
   avatar: string;
+  date: string;
+  _id: string;
 }
 
 export interface UserRequest {

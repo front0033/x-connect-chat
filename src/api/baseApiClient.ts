@@ -15,6 +15,12 @@ export const statusErrors: Record<string | number, string> = {
   default: 'Неизвестная сетевая ошибка',
 };
 
+export interface IServerError {
+  data?: {
+    errors?: Array<{ msg: string }>;
+  };
+}
+
 const baseApiClient =
   (
     { baseUrl }: { baseUrl: string } = { baseUrl: '' }
@@ -26,11 +32,12 @@ const baseApiClient =
       params?: AxiosRequestConfig['params'];
       headers?: AxiosRequestConfig['headers'];
       responseType?: AxiosRequestConfig['responseType'];
+      skipError?: boolean;
     },
     unknown,
     unknown
   > =>
-  async ({ url, method, data, params, headers, responseType }, api) => {
+  async ({ url, method, data, params, headers, responseType, skipError }, api) => {
     try {
       const result = await axios({
         url: baseUrl + url,
@@ -54,14 +61,16 @@ const baseApiClient =
           ? errors
           : Object.keys(errors).reduce((total, key) => `${total} ${key.toUpperCase()}: ${errors[key]}`, '');
 
-      api.dispatch(
-        setError({
-          name: err.name,
-          status: err.response?.status,
-          title: errorMessage,
-          description,
-        })
-      );
+      if (!skipError) {
+        api.dispatch(
+          setError({
+            name: err.name,
+            status: err.response?.status,
+            title: errorMessage,
+            description,
+          })
+        );
+      }
 
       return {
         error: { status: err.response?.status, data: err.response?.data },

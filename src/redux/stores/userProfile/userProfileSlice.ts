@@ -6,11 +6,16 @@ export interface ProfileRequest {
 }
 
 export interface Profile {
-  user: string;
+  user: {
+    avatar: string;
+    email: string;
+    _id: string;
+  };
   firstName: string;
   lastName: string;
   username: string;
   date: string;
+  _id: string;
 }
 
 export type PostProfileRequest = Pick<Profile, 'firstName' | 'lastName' | 'username'>;
@@ -36,10 +41,10 @@ export const profileApi = createApi({
     }),
     // получаем профиль юзера по userId
     getProfileByUserId: builder.query<Profile, ProfileRequest>({
-      query: (data) => ({
+      query: (params) => ({
         url: `/api/profile/me`,
         method: 'GET',
-        data,
+        params,
       }),
     }),
     // удаляем профиль юзера по userId

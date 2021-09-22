@@ -31,10 +31,16 @@ export const authApi = createApi({
         data: credentials,
       }),
     }),
+    logout: builder.query<User, void>({
+      query: () => ({
+        url: '/api/auth/logout',
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
 // use with dispatch
 export const resetAuthApi = authApi.util.resetApiState;
 
-export const { useGetUserQuery, useLazyGetUserQuery, useLazyLoginQuery, useLoginQuery } = authApi;
+export const { useGetUserQuery, useLazyGetUserQuery, useLazyLoginQuery, useLoginQuery, useLazyLogoutQuery } = authApi;

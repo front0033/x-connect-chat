@@ -2,7 +2,6 @@ import * as React from 'react';
 
 import { Button, Grid, List, ListItem, TextField, Typography } from '@material-ui/core';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
-import { wsConnect } from 'redux/stores/ws/wsSlice';
 import { sendMessageAction } from 'redux/stores/chats/chatSlice';
 import useStyles from './styles';
 
@@ -11,11 +10,6 @@ const MainPage: React.FC = () => {
   const [text, setText] = React.useState('');
 
   const dispatch = useAppDispatch();
-
-  React.useEffect(() => {
-    dispatch(wsConnect({ host: process.env.REACT_APP_WS_URL || '' }));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const handleSendClick = () => {
     dispatch(sendMessageAction(text));

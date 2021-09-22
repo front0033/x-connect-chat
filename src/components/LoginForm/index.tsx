@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 import {
   TextField,
@@ -50,9 +50,18 @@ interface ILoginFormProps {
   onSubmit: (args: { email: string; password: string }) => void;
   isLoading: boolean;
   isError: boolean;
+  isSuccess: boolean;
+  successRedurectUrl: string;
 }
 
-const LoginForm: React.FC<ILoginFormProps> = ({ isSignUp, isLoading, isError, onSubmit }) => {
+const LoginForm: React.FC<ILoginFormProps> = ({
+  isSignUp,
+  isLoading,
+  isError,
+  isSuccess,
+  successRedurectUrl,
+  onSubmit,
+}) => {
   const classes = useStyles();
   const [showPassword, setShowPassword] = React.useState(false);
 
@@ -129,29 +138,37 @@ const LoginForm: React.FC<ILoginFormProps> = ({ isSignUp, isLoading, isError, on
                 </FormControl>
                 {isError && (
                   <Alert className={classes.errorAlert} severity="error">
-                    Неправильный логин или пароль
+                    {isSignUp ? 'Пользователь уже существует' : 'Неправильный логин или пароль'}
                   </Alert>
                 )}
               </Grid>
             </DialogContent>
             <DialogActions className={classes.actions}>
-              <Button variant="contained" color="primary" type="submit" disabled={isSubmitting}>
-                Вход
-              </Button>
+              <Grid container justifyContent="space-between" direction="row-reverse">
+                <Button variant="contained" color="primary" type="submit" disabled={isSubmitting}>
+                  {isSignUp ? 'Создать' : 'Вход'}
+                </Button>
+                {!isSignUp ? (
+                  <Button variant="outlined" color="primary" component={Link} to={routes.signUp()}>
+                    Зарегистрироваться
+                  </Button>
+                ) : (
+                  <Button variant="outlined" color="primary" component={Link} to={routes.signIn()}>
+                    Войти
+                  </Button>
+                )}
+              </Grid>
             </DialogActions>
           </form>
         )}
       </Formik>
-      {!isSignUp && (
-        <Button component={Link} to={routes.signUp()}>
-          Зарегистрироваться
-        </Button>
-      )}
+
       {isLoading && (
         <Grid container justifyContent="center">
           <CircularProgress />
         </Grid>
       )}
+      {isSuccess && <Redirect to={successRedurectUrl} />}
     </div>
   );
 };
