@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box } from '@material-ui/core';
 import ProfileForm from 'components/ProfileForm';
-import { useCreateOrUpdateMutation } from 'redux/stores/userProfile/userProfileSlice';
+import { useCreateOrUpdateMutation } from 'redux/stores/userProfile/userProfileApi';
 
 // Страница редактирования профиля пользователя
 const ProfilePage: React.FC = () => {

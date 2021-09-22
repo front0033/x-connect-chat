@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box } from '@material-ui/core';
 import LoginForm from 'components/LoginForm';
-import { useCreateUserMutation } from 'redux/stores/user/userSlice';
+import { useCreateUserMutation } from 'redux/stores/user/userApi';
 import routes from 'routes';
 import X_CONNECT_LOCALSTORAGE_USER_KEY from 'components/AccessNavigator/constants';
 

@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import baseApiClient, { PROXY_URL } from 'api/baseApiClient';
-import { User } from '../user/userSlice';
+import { User } from '../user/userApi';
 
 export interface LoginRequest {
   email: string;

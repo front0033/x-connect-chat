@@ -2,9 +2,10 @@ import * as React from 'react';
 
 import { Box, AppBar, Grid, Typography, CssBaseline, Button } from '@material-ui/core';
 import LockIcon from '@material-ui/icons/Lock';
-import { resetAuthApi, useLazyLogoutQuery } from 'redux/stores/auth/authSlice';
-import { resetUserApi } from 'redux/stores/user/userSlice';
-import { resetProfileApi } from 'redux/stores/userProfile/userProfileSlice';
+import { resetAuthApi, useLazyLogoutQuery } from 'redux/stores/auth/authApi';
+import { resetUserApi } from 'redux/stores/user/userApi';
+import { resetProfileApi } from 'redux/stores/userProfile/userProfileApi';
+import { useAppDispatch } from 'redux/hooks';
 import X_CONNECT_LOCALSTORAGE_USER_KEY from 'components/AccessNavigator/constants';
 
 import useStyles from './styles';
@@ -13,12 +14,14 @@ const DefaultLayout: React.FC = ({ children }) => {
   const classes = useStyles();
 
   const [logout] = useLazyLogoutQuery();
+  const dispatch = useAppDispatch();
 
   const handleLogoutClick = () => {
     logout();
-    resetAuthApi();
-    resetUserApi();
-    resetProfileApi();
+
+    dispatch(resetAuthApi());
+    dispatch(resetUserApi());
+    dispatch(resetProfileApi());
     localStorage.removeItem(X_CONNECT_LOCALSTORAGE_USER_KEY);
   };
 

@@ -3,8 +3,8 @@ import * as React from 'react';
 import { useAppDispatch } from 'redux/hooks';
 import { CircularProgress, Grid, Typography } from '@material-ui/core';
 import { Redirect } from 'react-router-dom';
-import { useLazyGetUserQuery, useLazyLoginQuery } from 'redux/stores/auth/authSlice';
-import { useLazyGetProfileByUserIdQuery } from 'redux/stores/userProfile/userProfileSlice';
+import { useLazyGetUserQuery } from 'redux/stores/auth/authApi';
+import { useLazyGetProfileByUserIdQuery } from 'redux/stores/userProfile/userProfileApi';
 import { wsConnect } from 'redux/stores/ws/wsSlice';
 
 import routes from 'routes';
@@ -54,7 +54,7 @@ const AccessNavigator: React.FC = ({ children }) => {
   const redurectToMainPage = !!userData && !!profileData;
 
   const loading = isUserLoading || isProfileLoading || isProfileFetching || isUserFetching;
-  console.log('loading - ', loading);
+
   return (
     <>
       {loading && (

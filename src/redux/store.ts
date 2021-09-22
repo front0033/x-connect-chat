@@ -5,9 +5,9 @@ import history from 'shared/history';
 import { routerMiddleware } from 'connected-react-router';
 import websocketMiddleware from './stores/ws/wsMiddleware';
 import createRootReducer from './stores/createRootReducer';
-import { authApi } from './stores/auth/authSlice';
-import { userApi } from './stores/user/userSlice';
-import { profileApi } from './stores/userProfile/userProfileSlice';
+import { authApi } from './stores/auth/authApi';
+import { userApi } from './stores/user/userApi';
+import { profileApi } from './stores/userProfile/userProfileApi';
 
 const rootReducer = createRootReducer(history);
 
