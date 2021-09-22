@@ -8,6 +8,7 @@ import chatReducer, { chatReducerPath } from './chats/chatSlice';
 import errorReducer, { errorReducerPath } from './apiErrors/errorSlice';
 import { userApi } from './user/userApi';
 import { profileApi } from './userProfile/userProfileApi';
+import profileReducer, { profileReducerPath } from './userProfile/userProfileSlice';
 
 const createRootReducer = (history: History) =>
   combineReducers({
@@ -16,6 +17,7 @@ const createRootReducer = (history: History) =>
     [authApi.reducerPath]: authApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
     [profileApi.reducerPath]: profileApi.reducer,
+    [profileReducerPath]: profileReducer,
     [wsReducerPath]: wsReducer,
     [chatReducerPath]: chatReducer,
   });
