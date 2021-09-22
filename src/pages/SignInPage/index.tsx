@@ -5,16 +5,18 @@ import LoginForm from 'components/LoginForm';
 import { useLazyLoginQuery } from 'redux/stores/auth/authApi';
 import routes from 'routes';
 import X_CONNECT_LOCALSTORAGE_USER_KEY from 'components/AccessNavigator/constants';
+import { useAppSelector } from 'redux/hooks';
 
 // Страница авторизации
 const SignInPage: React.FC = () => {
-  const [login, { data, isLoading, isError, isSuccess }] = useLazyLoginQuery();
+  const [login, { isLoading, isError, isSuccess }] = useLazyLoginQuery();
+  const { user } = useAppSelector((store) => store.profile.userProfile) || {};
 
   React.useEffect(() => {
-    if (data) {
-      localStorage.setItem(X_CONNECT_LOCALSTORAGE_USER_KEY, data.userId);
+    if (user?.userId) {
+      localStorage.setItem(X_CONNECT_LOCALSTORAGE_USER_KEY, user?.userId);
     }
-  }, [data]);
+  }, [user?.userId]);
 
   return (
     <Box mt={5}>

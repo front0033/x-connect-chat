@@ -1,6 +1,7 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import baseApiClient, { PROXY_URL } from 'api/baseApiClient';
+import baseApiClient, { PROXY_URL, ResponseDataStatus } from 'api/baseApiClient';
 import { User } from '../user/userApi';
+import { resetProfile, setUser } from '../userProfile/userProfileSlice';
 
 export interface LoginRequest {
   email: string;
@@ -16,26 +17,39 @@ export const authApi = createApi({
   baseQuery: baseApiClient({ baseUrl: PROXY_URL }),
   endpoints: (builder) => ({
     // получаем инфу о user
-    getUser: builder.query<User, GetUserRequest>({
-      query: (params) => ({
-        url: '/api/auth',
-        method: 'GET',
-        params,
-      }),
+    getUser: builder.query<ResponseDataStatus, GetUserRequest>({
+      async queryFn(arg, queryApi, _extraOptions, apiClient) {
+        try {
+          const result = await apiClient({ url: '/api/auth', method: 'GET', params: arg });
+          queryApi.dispatch(setUser(result.data as User));
+          return { data: ResponseDataStatus.success };
+        } catch (error) {
+          return { data: ResponseDataStatus.error };
+        }
+      },
     }),
     // авторизируемся по логину и паролю
-    login: builder.query<User, LoginRequest>({
-      query: (credentials) => ({
-        url: '/api/auth',
-        method: 'POST',
-        data: credentials,
-      }),
+    login: builder.query<ResponseDataStatus, LoginRequest>({
+      async queryFn(arg, queryApi, _extraOptions, apiClient) {
+        try {
+          const result = await apiClient({ url: '/api/auth', method: 'POST', data: arg });
+          queryApi.dispatch(setUser(result.data as User));
+          return { data: ResponseDataStatus.success };
+        } catch (error) {
+          return { data: ResponseDataStatus.error };
+        }
+      },
     }),
-    logout: builder.query<User, void>({
-      query: () => ({
-        url: '/api/auth/logout',
-        method: 'GET',
-      }),
+    logout: builder.query<ResponseDataStatus, void>({
+      async queryFn(arg, queryApi, _extraOptions, apiClient) {
+        try {
+          await apiClient({ url: '/api/auth/logout', method: 'GET' });
+          queryApi.dispatch(resetProfile());
+          return { data: ResponseDataStatus.success };
+        } catch (error) {
+          return { data: ResponseDataStatus.error };
+        }
+      },
     }),
   }),
 });

@@ -4,6 +4,11 @@ import { setError } from 'redux/stores/apiErrors/errorSlice';
 
 export const PROXY_URL = '/api/chat';
 
+export enum ResponseDataStatus {
+  success = 'success',
+  error = 'error',
+}
+
 export const statusErrors: Record<string | number, string> = {
   401: 'Ошибка авторизации (401)',
   403: 'Ошибка авторизации (403)',

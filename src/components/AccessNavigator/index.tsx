@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { useAppDispatch } from 'redux/hooks';
+import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { CircularProgress, Grid, Typography } from '@material-ui/core';
 import { Redirect } from 'react-router-dom';
 import { useLazyGetUserQuery } from 'redux/stores/auth/authApi';
@@ -16,16 +16,16 @@ const AccessNavigator: React.FC = ({ children }) => {
   const dispatch = useAppDispatch();
 
   const localStorageUserId: string | null = localStorage.getItem(X_CONNECT_LOCALSTORAGE_USER_KEY);
-  const [getUser, { data: userData, isLoading: isUserLoading, isFetching: isUserFetching, isError: isUserDataError }] =
+  const [getUser, { isLoading: isUserLoading, isFetching: isUserFetching, isError: isUserDataError }] =
     useLazyGetUserQuery();
 
-  const [
-    getProfile,
-    { data: profileData, isLoading: isProfileLoading, isFetching: isProfileFetching, isError: isProfileDataError },
-  ] = useLazyGetProfileByUserIdQuery();
+  const [getProfile, { isLoading: isProfileLoading, isFetching: isProfileFetching, isError: isProfileDataError }] =
+    useLazyGetProfileByUserIdQuery();
+
+  const { user, username } = useAppSelector((store) => store.profile.userProfile) || {};
 
   React.useEffect(() => {
-    if (localStorageUserId && !userData) {
+    if (localStorageUserId && !user) {
       getUser({ userId: localStorageUserId });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -33,16 +33,16 @@ const AccessNavigator: React.FC = ({ children }) => {
 
   React.useEffect(() => {
     // если записи о userId нет в LocalStorage но userId у нас есть то записываем его туда
-    if (userData && !localStorageUserId) {
-      const userIdFromUserData = userData ? userData.userId : '';
+    if (user && !localStorageUserId) {
+      const userIdFromUserData = user ? user.userId : '';
       localStorage.setItem(X_CONNECT_LOCALSTORAGE_USER_KEY, userIdFromUserData);
     }
 
-    if (userData) {
-      getProfile({ userId: userData.userId });
+    if (user) {
+      getProfile({ userId: user.userId });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userData]);
+  }, [user]);
 
   React.useEffect(() => {
     dispatch(wsConnect({ host: process.env.REACT_APP_WS_URL || '' }));
@@ -50,8 +50,8 @@ const AccessNavigator: React.FC = ({ children }) => {
   }, []);
 
   const redirectToSignInPage = !localStorageUserId || isUserDataError;
-  const redirectToProfilePage = (!profileData && !!userData) || isProfileDataError;
-  const redurectToMainPage = !!userData && !!profileData;
+  const redirectToProfilePage = (!!user && !username) || isProfileDataError;
+  const redurectToMainPage = !!username;
 
   const loading = isUserLoading || isProfileLoading || isProfileFetching || isUserFetching;
 

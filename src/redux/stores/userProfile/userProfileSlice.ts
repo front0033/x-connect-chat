@@ -1,16 +1,36 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 
-import { IProfile } from './userProfileApi';
+export interface IProfile {
+  user: {
+    avatar: string;
+    email: string;
+    userId: string;
+    _id: string;
+  };
+  firstName: string;
+  lastName: string;
+  username: string;
+  date: string;
+  _id: string;
+}
 
-export const profileReducerPath = 'userReducer';
+export const profileReducerPath = 'profile';
 
 const profileSlice = createSlice({
   name: profileReducerPath,
   initialState: { userProfile: null as Partial<IProfile> | null },
   reducers: {
+    setUser: (state, { payload }: { payload: IProfile['user'] }) => {
+      state.userProfile = { ...state.userProfile, user: payload };
+    },
     setProfile: (state, { payload }: { payload: Partial<IProfile> }) => {
-      state.userProfile = state ? { ...state, ...payload } : payload;
+      const stateUser = state.userProfile?.user ?? null;
+      const userProfile = {
+        ...payload,
+        user: stateUser || payload.user,
+      };
+      state.userProfile = userProfile;
     },
     resetProfile: (state) => {
       state.userProfile = null;
@@ -18,5 +38,5 @@ const profileSlice = createSlice({
   },
 });
 
-export const { setProfile, resetProfile } = profileSlice.actions;
+export const { setUser, setProfile, resetProfile } = profileSlice.actions;
 export default profileSlice.reducer;

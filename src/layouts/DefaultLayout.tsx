@@ -5,7 +5,7 @@ import LockIcon from '@material-ui/icons/Lock';
 import { resetAuthApi, useLazyLogoutQuery } from 'redux/stores/auth/authApi';
 import { resetUserApi } from 'redux/stores/user/userApi';
 import { resetProfileApi } from 'redux/stores/userProfile/userProfileApi';
-import { useAppDispatch } from 'redux/hooks';
+import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import X_CONNECT_LOCALSTORAGE_USER_KEY from 'components/AccessNavigator/constants';
 
 import useStyles from './styles';
@@ -15,6 +15,7 @@ const DefaultLayout: React.FC = ({ children }) => {
 
   const [logout] = useLazyLogoutQuery();
   const dispatch = useAppDispatch();
+  const { user } = useAppSelector((store) => store.profile.userProfile) || {};
 
   const handleLogoutClick = () => {
     logout();
@@ -39,7 +40,7 @@ const DefaultLayout: React.FC = ({ children }) => {
           <Typography className={classes.title} variant="h6">
             X-CONNECT-CHAT
           </Typography>
-          <Button onClick={handleLogoutClick}>Выйти</Button>
+          {user ? <Button onClick={handleLogoutClick}>Выйти</Button> : <div />}
         </Grid>
       </AppBar>
       <CssBaseline />
