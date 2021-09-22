@@ -12,7 +12,7 @@ export interface UserRequest {
   password: string;
 }
 
-export const userSlice = createApi({
+export const userApi = createApi({
   reducerPath: 'userApi',
   baseQuery: baseApiClient({ baseUrl: PROXY_URL }),
   endpoints: (builder) => ({
@@ -28,6 +28,6 @@ export const userSlice = createApi({
 });
 
 // use with dispatch
-export const resetUserApi = userSlice.util.resetApiState;
+export const resetUserApi = userApi.util.resetApiState;
 
-export const { useCreateUserMutation } = userSlice;
+export const { useCreateUserMutation } = userApi;

@@ -6,14 +6,16 @@ import { authApi } from './auth/authSlice';
 import wsReducer, { wsReducerPath } from './ws/wsSlice';
 import chatReducer, { chatReducerPath } from './chats/chatSlice';
 import errorReducer, { errorReducerPath } from './apiErrors/errorSlice';
-import { userSlice } from './user/userSlice';
+import { userApi } from './user/userSlice';
+import { profileApi } from './userProfile/userProfileSlice';
 
 const createRootReducer = (history: History) =>
   combineReducers({
     router: connectRouter(history),
     [errorReducerPath]: errorReducer,
     [authApi.reducerPath]: authApi.reducer,
-    [userSlice.reducerPath]: userSlice.reducer,
+    [userApi.reducerPath]: userApi.reducer,
+    [profileApi.reducerPath]: profileApi.reducer,
     [wsReducerPath]: wsReducer,
     [chatReducerPath]: chatReducer,
   });

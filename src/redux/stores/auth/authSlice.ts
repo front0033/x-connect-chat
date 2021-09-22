@@ -17,10 +17,10 @@ export const authApi = createApi({
   endpoints: (builder) => ({
     // получаем инфу о user
     getUser: builder.query<User, GetUserRequest>({
-      query: (data) => ({
+      query: (params) => ({
         url: '/api/auth',
         method: 'GET',
-        data,
+        params,
       }),
     }),
     // авторизируемся по логину и паролю

@@ -1,6 +1,8 @@
 const routes = {
   main: () => '/',
-  auth: () => '/auth',
+  signIn: () => '/sign-in',
+  signUp: () => '/sign-up',
+  profile: () => '/profile',
 };
 
 export default routes;

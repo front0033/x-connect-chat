@@ -23,15 +23,23 @@ const baseApiClient =
       url: string;
       method: any;
       data?: AxiosRequestConfig['data'];
+      params?: AxiosRequestConfig['params'];
       headers?: AxiosRequestConfig['headers'];
       responseType?: AxiosRequestConfig['responseType'];
     },
     unknown,
     unknown
   > =>
-  async ({ url, method, data, headers, responseType }, api) => {
+  async ({ url, method, data, params, headers, responseType }, api) => {
     try {
-      const result = await axios({ url: baseUrl + url, method, data, headers, responseType });
+      const result = await axios({
+        url: baseUrl + url,
+        method,
+        data,
+        params,
+        headers,
+        responseType,
+      });
       return { data: result.data };
       return result;
     } catch (axiosError) {

@@ -22,7 +22,7 @@ export const profileApi = createApi({
     // создаем новый профиль для юзера или обновляем его
     createOrUpdate: builder.mutation<Profile, PostProfileRequest>({
       query: (credentials) => ({
-        url: '/api/profile',
+        url: '/api/profile/',
         method: 'POST',
         data: credentials,
       }),
@@ -42,7 +42,7 @@ export const profileApi = createApi({
         data,
       }),
     }),
-    // получаем профиль юзера по userId
+    // удаляем профиль юзера по userId
     deleteProfile: builder.query<Profile, ProfileRequest>({
       query: (data) => ({
         url: '/api/profile',
@@ -56,4 +56,9 @@ export const profileApi = createApi({
 // use with dispatch
 export const resetProfileApi = profileApi.util.resetApiState;
 
-export const { useCreateOrUpdateMutation, useGetProfileByUserIdQuery, useDeleteProfileQuery } = profileApi;
+export const {
+  useCreateOrUpdateMutation,
+  useGetProfileByUserIdQuery,
+  useLazyGetProfileByUserIdQuery,
+  useDeleteProfileQuery,
+} = profileApi;
