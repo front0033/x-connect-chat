@@ -21,7 +21,7 @@ const Message: React.FC<IMessageProps> = ({ userName, message, date, my }) => {
   return (
     <Grid container justifyContent={my ? 'flex-end' : 'flex-start'}>
       <Alert severity={my ? 'success' : 'info'} classes={alertClasses}>
-        <Grid container direction="column" alignContent={my ? 'flex-start' : 'flex-end'}>
+        <Grid container direction="column" alignContent="flex-start">
           <Typography variant="caption">{userName}</Typography>
           <Typography>{message}</Typography>
         </Grid>

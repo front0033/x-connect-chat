@@ -48,8 +48,9 @@ const AccessNavigator: React.FC = ({ children }) => {
   return (
     <>
       {loading && (
-        <Grid container direction="column" style={{ height: 500 }} justifyContent="center" alignContent="center">
-          <Typography>Данные загружаються</Typography>
+        <Grid container direction="column" style={{ height: 500 }} justifyContent="center" alignItems="center">
+          <Typography variant="button">Проверка доступа</Typography>
+          <br />
           <CircularProgress color="primary" />
         </Grid>
       )}
