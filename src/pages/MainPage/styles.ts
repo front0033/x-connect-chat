@@ -5,7 +5,7 @@ const useStyles = makeStyles((theme) =>
     root: {
       paddingTop: theme.spacing(7),
       marginTop: theme.spacing(6),
-      padding: theme.spacing(3),
+      padding: theme.spacing(1),
       textAlign: 'center',
       height: '90%',
     },
@@ -30,6 +30,13 @@ const useStyles = makeStyles((theme) =>
     messageList: {
       height: '70%',
       width: '100%',
+    },
+    listItem: {
+      paddingLeft: theme.spacing(1),
+      paddingRight: theme.spacing(1),
+    },
+    textFieldContainer: {
+      paddingTop: theme.spacing(2),
     },
   })
 );

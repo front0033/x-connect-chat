@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Divider, Grid, IconButton, List, ListItem, TextField, Typography } from '@material-ui/core';
+import { Grid, IconButton, List, ListItem, TextField } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { sendMessageAction } from 'redux/stores/chats/chatSlice';
@@ -41,7 +41,7 @@ const MainPage: React.FC = () => {
     <Grid container direction="column" alignItems="center" className={classes.root} justifyContent="space-between">
       <List className={classes.messageList}>
         {messageList.map((msg) => (
-          <ListItem key={msg.date}>
+          <ListItem key={msg.date} className={classes.listItem}>
             <Message
               userName={getUserNameById(msg.userId)}
               message={msg.message}
@@ -51,10 +51,9 @@ const MainPage: React.FC = () => {
           </ListItem>
         ))}
       </List>
-      <Divider />
-      <Grid container wrap="nowrap" alignItems="center">
+      <Grid container wrap="nowrap" alignItems="center" className={classes.textFieldContainer}>
         <TextField variant="outlined" className={classes.textField} value={text} onChange={handleChange} />
-        <IconButton className={classes.button} onClick={handleSendClick}>
+        <IconButton className={classes.button} onClick={handleSendClick} disabled={!text}>
           <SendIcon className={classes.icon} />
         </IconButton>
       </Grid>
