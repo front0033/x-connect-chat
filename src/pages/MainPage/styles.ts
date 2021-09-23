@@ -7,6 +7,7 @@ const useStyles = makeStyles((theme) =>
       marginTop: theme.spacing(6),
       padding: theme.spacing(3),
       textAlign: 'center',
+      height: '90%',
     },
     actions: {
       marginTop: theme.spacing(6),
@@ -14,18 +15,21 @@ const useStyles = makeStyles((theme) =>
       display: 'flex',
       justifyContent: 'center',
     },
-    icon: {
-      color: theme.palette.error.dark,
-      height: 72,
-      marginBottom: theme.spacing(4),
-      width: 72,
-    },
     textField: {
       width: 300,
-      marginTop: theme.spacing(2),
     },
     button: {
-      marginTop: theme.spacing(2),
+      border: `2px solid ${theme.palette.success.main}`,
+      marginLeft: theme.spacing(1),
+      padding: 6,
+    },
+    icon: {
+      color: theme.palette.success.main,
+      paddingLeft: 4,
+    },
+    messageList: {
+      height: '70%',
+      width: '100%',
     },
   })
 );

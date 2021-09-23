@@ -12,8 +12,14 @@ export enum WSStatus {
   WS_DISCONNECTED = 'WS_DISCONNECTED',
 }
 
+interface IMessageData {
+  userId: string;
+  message: string;
+  date: string;
+}
+
 export interface IChat {
-  messageList: string[];
+  messageList: IMessageData[];
 }
 
 interface IMessagePayload {
@@ -32,7 +38,8 @@ const wsSlice = createSlice({
   initialState: { messageList: [] } as IChat,
   reducers: {
     setMessage: (state, { payload: { message } }: { payload: IMessagePayload }) => {
-      state.messageList = [...state.messageList, message];
+      const newMessage: IMessageData = JSON.parse(message);
+      state.messageList = [...state.messageList, newMessage];
     },
   },
 });

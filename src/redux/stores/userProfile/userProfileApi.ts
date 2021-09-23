@@ -59,6 +59,7 @@ export const resetProfileApi = profileApi.util.resetApiState;
 
 export const {
   useCreateOrUpdateMutation,
+  useGetAllProfilesQuery,
   useGetProfileByUserIdQuery,
   useLazyGetProfileByUserIdQuery,
   useDeleteProfileQuery,
