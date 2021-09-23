@@ -27,7 +27,6 @@ export const authApi = createApi({
           // eslint-disable-next-line no-underscore-dangle
           const formatedUser = { ...user, userId: user._id };
           const { userId } = formatedUser;
-          console.log('getUser setItem - ', X_CONNECT_LOCALSTORAGE_USER_KEY, userId);
           localStorage.setItem(X_CONNECT_LOCALSTORAGE_USER_KEY, userId);
           queryApi.dispatch(setUser(formatedUser));
 
@@ -52,7 +51,6 @@ export const authApi = createApi({
           // eslint-disable-next-line no-underscore-dangle
           const formatedUser = { ...user, userId: user._id };
           const { userId } = formatedUser;
-          console.log('login setItem - ', X_CONNECT_LOCALSTORAGE_USER_KEY, userId);
           localStorage.setItem(X_CONNECT_LOCALSTORAGE_USER_KEY, userId);
           queryApi.dispatch(setUser(formatedUser));
 
@@ -73,7 +71,6 @@ export const authApi = createApi({
       async queryFn(arg, queryApi, _extraOptions, apiClient) {
         try {
           await apiClient({ url: '/api/auth/logout', method: 'GET' });
-          console.log('removeItem - ', X_CONNECT_LOCALSTORAGE_USER_KEY);
           localStorage.removeItem(X_CONNECT_LOCALSTORAGE_USER_KEY);
           queryApi.dispatch(resetProfile());
           queryApi.dispatch(resetUserApi());

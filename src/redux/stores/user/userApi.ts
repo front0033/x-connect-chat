@@ -28,7 +28,6 @@ export const userApi = createApi({
           const user = result.data as User;
           // eslint-disable-next-line no-underscore-dangle
           const formatedUser = { ...user, userId: user._id };
-          console.log('createUser setItem - ', X_CONNECT_LOCALSTORAGE_USER_KEY, formatedUser.userId);
           localStorage.setItem(X_CONNECT_LOCALSTORAGE_USER_KEY, formatedUser.userId);
           queryApi.dispatch(setUser(formatedUser));
           return { data: ResponseDataStatus.success };

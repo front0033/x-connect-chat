@@ -4,7 +4,6 @@ import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { CircularProgress, Grid, Typography } from '@material-ui/core';
 import { Redirect } from 'react-router-dom';
 import { useLazyGetUserQuery } from 'redux/stores/auth/authApi';
-import { useLazyGetProfileByUserIdQuery } from 'redux/stores/userProfile/userProfileApi';
 import { wsConnect } from 'redux/stores/ws/wsSlice';
 
 import routes from 'routes';
