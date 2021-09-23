@@ -1,5 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import baseApiClient, { PROXY_URL, ResponseDataStatus } from 'api/baseApiClient';
+import X_CONNECT_LOCALSTORAGE_USER_KEY from 'components/AccessNavigator/constants';
 import { setUser } from '../userProfile/userProfileSlice';
 
 export interface User {
@@ -24,7 +25,12 @@ export const userApi = createApi({
       async queryFn(arg, queryApi, _extraOptions, apiClient) {
         try {
           const result = await apiClient({ url: '/api/user', method: 'POST', data: arg });
-          queryApi.dispatch(setUser(result.data as User));
+          const user = result.data as User;
+          // eslint-disable-next-line no-underscore-dangle
+          const formatedUser = { ...user, userId: user._id };
+          console.log('createUser setItem - ', X_CONNECT_LOCALSTORAGE_USER_KEY, formatedUser.userId);
+          localStorage.setItem(X_CONNECT_LOCALSTORAGE_USER_KEY, formatedUser.userId);
+          queryApi.dispatch(setUser(formatedUser));
           return { data: ResponseDataStatus.success };
         } catch (error) {
           return { data: ResponseDataStatus.error };

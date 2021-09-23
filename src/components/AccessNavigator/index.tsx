@@ -15,12 +15,10 @@ import X_CONNECT_LOCALSTORAGE_USER_KEY from './constants';
 const AccessNavigator: React.FC = ({ children }) => {
   const dispatch = useAppDispatch();
 
+  // единственное место где мы берем userId из localstorage
   const localStorageUserId: string | null = localStorage.getItem(X_CONNECT_LOCALSTORAGE_USER_KEY);
   const [getUser, { isLoading: isUserLoading, isFetching: isUserFetching, isError: isUserDataError }] =
     useLazyGetUserQuery();
-
-  const [getProfile, { isLoading: isProfileLoading, isFetching: isProfileFetching, isError: isProfileDataError }] =
-    useLazyGetProfileByUserIdQuery();
 
   const { user, username } = useAppSelector((store) => store.profile.userProfile) || {};
 
@@ -32,28 +30,25 @@ const AccessNavigator: React.FC = ({ children }) => {
   }, [localStorageUserId]);
 
   React.useEffect(() => {
-    // если записи о userId нет в LocalStorage но userId у нас есть то записываем его туда
-    if (user && !localStorageUserId) {
-      const userIdFromUserData = user ? user.userId : '';
-      localStorage.setItem(X_CONNECT_LOCALSTORAGE_USER_KEY, userIdFromUserData);
-    }
-
-    if (user) {
-      getProfile({ userId: user.userId });
+    // если profile полностью загружен - создаем сокет соединение
+    if (username) {
+      dispatch(wsConnect({ host: process.env.REACT_APP_WS_URL || '' }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  }, [username]);
 
-  React.useEffect(() => {
-    dispatch(wsConnect({ host: process.env.REACT_APP_WS_URL || '' }));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const profileIsComplete = !!user && !!username;
 
-  const redirectToSignInPage = !localStorageUserId || isUserDataError;
-  const redirectToProfilePage = (!!user && !username) || isProfileDataError;
-  const redurectToMainPage = !!username;
+  // если никаких данных нет, то отправляем пользователя на страницу входа
+  const redirectToSignInPage = !user || isUserDataError;
 
-  const loading = isUserLoading || isProfileLoading || isProfileFetching || isUserFetching;
+  // если profile отсутствует но есть user пользователю нужно заполнить profile
+  const redirectToProfilePage = !!user && !username;
+
+  // если profile полностью загружен - разрешаем редирект на главную страницу
+  const redurectToMainPage = profileIsComplete;
+
+  const loading = isUserLoading || isUserFetching;
 
   return (
     <>

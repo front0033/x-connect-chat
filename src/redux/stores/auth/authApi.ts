@@ -1,7 +1,9 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import baseApiClient, { PROXY_URL, ResponseDataStatus } from 'api/baseApiClient';
-import { User } from '../user/userApi';
-import { resetProfile, setUser } from '../userProfile/userProfileSlice';
+import X_CONNECT_LOCALSTORAGE_USER_KEY from 'components/AccessNavigator/constants';
+import { User, resetUserApi } from '../user/userApi';
+import { resetProfileApi } from '../userProfile/userProfileApi';
+import { IProfile, resetProfile, setProfile, setUser } from '../userProfile/userProfileSlice';
 
 export interface LoginRequest {
   email: string;
@@ -21,7 +23,20 @@ export const authApi = createApi({
       async queryFn(arg, queryApi, _extraOptions, apiClient) {
         try {
           const result = await apiClient({ url: '/api/auth', method: 'GET', params: arg });
-          queryApi.dispatch(setUser(result.data as User));
+          const user = result.data as User;
+          // eslint-disable-next-line no-underscore-dangle
+          const formatedUser = { ...user, userId: user._id };
+          const { userId } = formatedUser;
+          console.log('getUser setItem - ', X_CONNECT_LOCALSTORAGE_USER_KEY, userId);
+          localStorage.setItem(X_CONNECT_LOCALSTORAGE_USER_KEY, userId);
+          queryApi.dispatch(setUser(formatedUser));
+
+          const profileResult = await apiClient({ url: '/api/profile/me', method: 'GET', params: { userId } });
+          const profile = profileResult.data as IProfile;
+
+          // eslint-disable-next-line no-underscore-dangle
+          const formatedProfile = { ...(profile || {}), user: { ...user, userId: user._id } };
+          queryApi.dispatch(setProfile(formatedProfile));
           return { data: ResponseDataStatus.success };
         } catch (error) {
           return { data: ResponseDataStatus.error };
@@ -32,8 +47,22 @@ export const authApi = createApi({
     login: builder.query<ResponseDataStatus, LoginRequest>({
       async queryFn(arg, queryApi, _extraOptions, apiClient) {
         try {
-          const result = await apiClient({ url: '/api/auth', method: 'POST', data: arg });
-          queryApi.dispatch(setUser(result.data as User));
+          const userResult = await apiClient({ url: '/api/auth', method: 'POST', data: arg });
+          const user = userResult.data as User;
+          // eslint-disable-next-line no-underscore-dangle
+          const formatedUser = { ...user, userId: user._id };
+          const { userId } = formatedUser;
+          console.log('login setItem - ', X_CONNECT_LOCALSTORAGE_USER_KEY, userId);
+          localStorage.setItem(X_CONNECT_LOCALSTORAGE_USER_KEY, userId);
+          queryApi.dispatch(setUser(formatedUser));
+
+          const profileResult = await apiClient({ url: '/api/profile/me', method: 'GET', params: { userId } });
+          const profile = profileResult.data as IProfile;
+
+          // eslint-disable-next-line no-underscore-dangle
+          const formatedProfile = { ...(profile || {}), user: { ...user, userId: user._id } };
+
+          queryApi.dispatch(setProfile(formatedProfile));
           return { data: ResponseDataStatus.success };
         } catch (error) {
           return { data: ResponseDataStatus.error };
@@ -44,7 +73,12 @@ export const authApi = createApi({
       async queryFn(arg, queryApi, _extraOptions, apiClient) {
         try {
           await apiClient({ url: '/api/auth/logout', method: 'GET' });
+          console.log('removeItem - ', X_CONNECT_LOCALSTORAGE_USER_KEY);
+          localStorage.removeItem(X_CONNECT_LOCALSTORAGE_USER_KEY);
           queryApi.dispatch(resetProfile());
+          queryApi.dispatch(resetUserApi());
+          queryApi.dispatch(resetProfileApi());
+
           return { data: ResponseDataStatus.success };
         } catch (error) {
           return { data: ResponseDataStatus.error };

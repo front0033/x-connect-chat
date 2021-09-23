@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import {
   TextField,
@@ -50,18 +50,9 @@ interface ILoginFormProps {
   onSubmit: (args: { email: string; password: string }) => void;
   isLoading: boolean;
   isError: boolean;
-  isSuccess: boolean;
-  successRedurectUrl: string;
 }
 
-const LoginForm: React.FC<ILoginFormProps> = ({
-  isSignUp,
-  isLoading,
-  isError,
-  isSuccess,
-  successRedurectUrl,
-  onSubmit,
-}) => {
+const LoginForm: React.FC<ILoginFormProps> = ({ isSignUp, isLoading, isError, onSubmit }) => {
   const classes = useStyles();
   const [showPassword, setShowPassword] = React.useState(false);
 
@@ -168,7 +159,6 @@ const LoginForm: React.FC<ILoginFormProps> = ({
           <CircularProgress />
         </Grid>
       )}
-      {isSuccess && <Redirect to={successRedurectUrl} />}
     </div>
   );
 };
