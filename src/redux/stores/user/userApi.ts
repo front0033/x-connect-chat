@@ -27,7 +27,7 @@ export const userApi = createApi({
           const result = await apiClient({ url: '/api/user', method: 'POST', data: arg });
           const user = result.data as User;
           // eslint-disable-next-line no-underscore-dangle
-          const formatedUser = { ...user, userId: user._id };
+          const formatedUser = { ...user, _id: user.userId };
           localStorage.setItem(X_CONNECT_LOCALSTORAGE_USER_KEY, formatedUser.userId);
           queryApi.dispatch(setUser(formatedUser));
           return { data: ResponseDataStatus.success };

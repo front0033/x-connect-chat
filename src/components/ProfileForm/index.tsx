@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { Redirect } from 'react-router-dom';
 import {
   TextField,
   Button,
@@ -36,12 +37,22 @@ const validationSchema: yup.SchemaOf<IProfileFormState> = yup.object().shape({
 });
 
 interface ILoginFormProps {
+  initialValues: IProfileFormState | undefined;
   onSubmit: (args: Required<IProfileFormState>) => void;
   isLoading: boolean;
   isError: boolean;
+  isSussess: boolean;
+  successRedurectUrl: string;
 }
 
-const ProfileForm: React.FC<ILoginFormProps> = ({ isLoading, isError, onSubmit }) => {
+const ProfileForm: React.FC<ILoginFormProps> = ({
+  initialValues,
+  isLoading,
+  isError,
+  onSubmit,
+  isSussess,
+  successRedurectUrl,
+}) => {
   const classes = useStyles();
 
   const handleSubmitClick = async (values: IProfileFormState) => {
@@ -51,7 +62,11 @@ const ProfileForm: React.FC<ILoginFormProps> = ({ isLoading, isError, onSubmit }
 
   return (
     <div>
-      <Formik initialValues={initialState} validationSchema={validationSchema} onSubmit={handleSubmitClick}>
+      <Formik
+        initialValues={initialValues || initialState}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmitClick}
+      >
         {({ values, errors, touched, isSubmitting, handleChange, handleSubmit }) => (
           <form onSubmit={handleSubmit} noValidate>
             <DialogTitle id="form-dialog-title">Профиль</DialogTitle>
@@ -118,6 +133,7 @@ const ProfileForm: React.FC<ILoginFormProps> = ({ isLoading, isError, onSubmit }
           <CircularProgress />
         </Grid>
       )}
+      {isSussess && <Redirect to={successRedurectUrl} />}
     </div>
   );
 };

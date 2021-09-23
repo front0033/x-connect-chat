@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 import { Box, AppBar, Grid, Typography, CssBaseline } from '@material-ui/core';
-import LockIcon from '@material-ui/icons/Lock';
 import UserInfoWithExitAction from 'components/UserInfoWithExitAction';
 import { useLazyLogoutQuery } from 'redux/stores/auth/authApi';
 import { useAppSelector } from 'redux/hooks';
@@ -13,12 +12,12 @@ const DefaultLayout: React.FC = ({ children }) => {
 
   const [logout] = useLazyLogoutQuery();
   const profile = useAppSelector((store) => store.profile.userProfile) || {};
+  const { username } = profile;
 
   const handleLogoutClick = () => {
     logout();
   };
 
-  const userName = profile.username || profile.user?.email || '';
   return (
     <Box className={classes.root}>
       <AppBar className={classes.appBar} position="fixed" title="REACT APP" color="default">
@@ -29,11 +28,10 @@ const DefaultLayout: React.FC = ({ children }) => {
           alignItems="center"
           justifyContent="space-between"
         >
-          <LockIcon />
           <Typography className={classes.title} variant="h6">
-            X-CONNECT-CHAT
+            X-CHAT
           </Typography>
-          {!!userName && <UserInfoWithExitAction userName={userName} action={handleLogoutClick} />}
+          {!!username && <UserInfoWithExitAction userName={username} action={handleLogoutClick} />}
         </Grid>
       </AppBar>
       <CssBaseline />

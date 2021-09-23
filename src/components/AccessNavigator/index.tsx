@@ -38,14 +38,10 @@ const AccessNavigator: React.FC = ({ children }) => {
 
   const profileIsComplete = !!user && !!username;
 
-  // если никаких данных нет, то отправляем пользователя на страницу входа
   const redirectToSignInPage = !user || isUserDataError;
 
   // если profile отсутствует но есть user пользователю нужно заполнить profile
   const redirectToProfilePage = !!user && !username;
-
-  // если profile полностью загружен - разрешаем редирект на главную страницу
-  const redurectToMainPage = profileIsComplete;
 
   const loading = isUserLoading || isUserFetching;
 
@@ -54,13 +50,20 @@ const AccessNavigator: React.FC = ({ children }) => {
       {loading && (
         <Grid container direction="column" style={{ height: 500 }} justifyContent="center" alignContent="center">
           <Typography>Данные загружаються</Typography>
-          <CircularProgress />
+          <CircularProgress color="primary" />
         </Grid>
       )}
+
       {!loading && children}
+
+      {/* если никаких данных нет, то отправляем пользователя на страницу входа */}
       {redirectToSignInPage && <Redirect to={routes.signIn()} />}
+
+      {/* если profile отсутствует но есть user пользователю нужно заполнить profile */}
       {redirectToProfilePage && <Redirect to={routes.profile()} />}
-      {redurectToMainPage && <Redirect to={routes.main()} />}
+
+      {/* если profile полностью загружен - разрешаем редирект на главную страницу */}
+      {profileIsComplete && <Redirect to={routes.main()} />}
     </>
   );
 };

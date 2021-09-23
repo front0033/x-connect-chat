@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     button: {
       margin: theme.spacing(2),
+      width: 150,
     },
     avatar: {
       fontSize: 14,

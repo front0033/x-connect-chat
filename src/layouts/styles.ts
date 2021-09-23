@@ -6,7 +6,7 @@ const useStyles = makeStyles((theme) =>
       height: '100vh',
     },
     appBar: {
-      height: 40,
+      height: 50,
     },
     logo: {
       height: 50,
@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme) =>
     },
     titleContainer: {
       paddingLeft: theme.spacing(2),
+      height: 50,
     },
     title: {
       marginTop: 3,
