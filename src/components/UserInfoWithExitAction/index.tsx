@@ -13,10 +13,11 @@ import useStyles from './styles';
 
 interface IUserInfoWithExitActionProps {
   userName: string;
+  avatar: string;
   action: () => void;
 }
 
-const UserInfoWithExitAction: React.FC<IUserInfoWithExitActionProps> = ({ userName, action }) => {
+const UserInfoWithExitAction: React.FC<IUserInfoWithExitActionProps> = ({ userName, avatar, action }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [initials, setInitials] = useState('');
@@ -64,7 +65,9 @@ const UserInfoWithExitAction: React.FC<IUserInfoWithExitActionProps> = ({ userNa
             onClick={handleClick}
             endIcon={<ArrowDropDownIcon />}
           >
-            <Avatar className={classes.avatar}>{initials}</Avatar>
+            <Avatar className={classes.avatar} src={avatar}>
+              {!avatar && initials}
+            </Avatar>
             <span className={classes.userLabel}>{userName}</span>
           </Button>
           <Popover

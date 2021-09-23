@@ -12,7 +12,7 @@ const DefaultLayout: React.FC = ({ children }) => {
 
   const [logout] = useLazyLogoutQuery();
   const profile = useAppSelector((store) => store.profile.userProfile) || {};
-  const { username } = profile;
+  const { username, user } = profile;
 
   const handleLogoutClick = () => {
     logout();
@@ -31,7 +31,9 @@ const DefaultLayout: React.FC = ({ children }) => {
           <Typography className={classes.title} variant="h6">
             X-CHAT
           </Typography>
-          {!!username && <UserInfoWithExitAction userName={username} action={handleLogoutClick} />}
+          {!!username && (
+            <UserInfoWithExitAction userName={username} avatar={user?.avatar ?? ''} action={handleLogoutClick} />
+          )}
         </Grid>
       </AppBar>
       <CssBaseline />
