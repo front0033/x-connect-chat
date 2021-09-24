@@ -1,46 +1,66 @@
-# Getting Started with Create React App
+# X-CONNECT-CHAT
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Клиентское приложение (SPA) чат, для примера моих хард скилов
 
-## Available Scripts
+## Приступая к работе
 
-In the project directory, you can run:
+Перед началом работы с проектом убедитесь в наличии необходимого программного обеспечения.
 
-### `yarn start`
+### Необходимое программное обеспечение
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- Node версии 12 и выше
+- npm версии 6 и выше
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Установка
 
-### `yarn test`
+Выполните следующую команду —
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+`npm i`
 
-### `yarn build`
+## Запуск в режиме разработки
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Для локальной разработки выполните следующую команду —
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+`npm run start`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Дев-сервер будет запущен на порту 3000. Обратите внимание, что обращение к API проксируется. Используемые прокси описаны
+в файле _src/setupProxy.js_, переменные окружения с адресами — в файле _.env.development_.
 
-### `yarn eject`
+## Сборка
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Для сборки введите выполните следующую команду —
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```
+npm run build
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Переменные окружения
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- `API_URL` — адрес хоста для обращения к API сервера чата (например, <http://example-host.ru/>) с обязательным слеш (/)
+  в конце
+- `WS_URL` — адрес хоста для подключения WS соединения (например, <ws://example-ws.ru/>) с обязательным слеш (/) в конце
 
-## Learn More
+## Распространение (Docker)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Возможна сборка и использование Docker-контейнера. Для запуска контейнера задайте все необходимые переменные окружения.
+Приложение в контейнере запускается на порту **27182**. Пример запуска —
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```
+docker run --rm -d\
+ -e API_URL=http://example-host.ru/\
+ -e WS_URL=ws://example-ws.ru/\
+ -p 8080:27182 docker-x-connected-chat.ru
+```
+
+## Используемые технологии
+
+- [React](https://ru.reactjs.org/) - Фреймворк
+- [Typescript](https://www.typescriptlang.org/) - Типизация
+- [Create react App](https://create-react-app.dev/) - Темплейт для создания приложения
+- [Redux Toolkit](https://redux-toolkit.js.org/) - Работа с данными
+- [Material-UI](https://material-ui.com/) - Библиотека с UI-компонентами
+
+## Версионирование
+
+Используется [SemVer](http://semver.org/). Для задания версии можно иcпользовать команду
+[npm version patch](https://docs.npmjs.com/cli/version).
