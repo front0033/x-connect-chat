@@ -15,4 +15,4 @@ COPY nginx/nginx.template.conf /etc/nginx/nginx.template.conf
 RUN chmod -R 777 /etc/nginx /var/cache/nginx /var/run
 EXPOSE 27182
 
-CMD /bin/sh -c "envsubst '\$API_ITEMS_URL' < /etc/nginx/nginx.template.conf > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+CMD /bin/sh -c "envsubst '\$API_URL \$WS_URL' < /etc/nginx/nginx.template.conf > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
