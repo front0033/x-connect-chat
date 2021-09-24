@@ -53,26 +53,15 @@ const baseApiClient =
         responseType,
       });
       return { data: result.data };
-      return result;
     } catch (axiosError) {
       const err = axiosError as AxiosError;
       const errorMessage = statusErrors[err.response?.status || ''] || statusErrors.default;
 
-      const errorData = err.response?.data ?? {};
-      const { errors } = errorData;
-
-      const description =
-        typeof errors === 'string'
-          ? errors
-          : Object.keys(errors).reduce((total, key) => `${total} ${key.toUpperCase()}: ${errors[key]}`, '');
-
       if (!skipError) {
         api.dispatch(
           setError({
-            name: err.name,
             status: err.response?.status,
             title: errorMessage,
-            description,
           })
         );
       }

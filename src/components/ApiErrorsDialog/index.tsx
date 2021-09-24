@@ -36,9 +36,8 @@ const ApiErrorsDialog: React.FC = () => {
       <DialogContent className={classes.content} dividers id="dialog-error-text">
         {errors.map((error, i) => (
           // eslint-disable-next-line react/no-array-index-key
-          <DialogContentText key={error.name + i}>
-            <Typography>{`${error.status}: ${error.title}`}</Typography>
-            <Typography variant="caption">{`Подробнее: ${error.description}`}</Typography>
+          <DialogContentText key={i}>
+            <Typography>{`${error.title}`}</Typography>
             <br />
           </DialogContentText>
         ))}

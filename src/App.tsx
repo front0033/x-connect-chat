@@ -10,6 +10,7 @@ import MainPage from 'pages/MainPage';
 import SingInPage from 'pages/SignInPage';
 import SignUpPage from 'pages/SignUpPage';
 import ProfilePage from 'pages/ProfilePage';
+import ApiErrorsDialog from 'components/ApiErrorsDialog';
 
 // #5FAF2D - logo color
 const theme = createTheme({});
@@ -20,6 +21,7 @@ const App: React.FC<IApp> = (): ReactElement => (
   <MuiThemeProvider theme={theme}>
     <StylesProvider injectFirst>
       <DefaultLayout>
+        <ApiErrorsDialog />
         <AccessNavigator>
           <Switch>
             <Route exact path={routes.signIn()} component={SingInPage} />
