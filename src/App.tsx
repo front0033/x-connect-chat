@@ -1,44 +1,39 @@
-import * as React from "react";
-import logo from "./logo.svg";
-import "./App.css";
+import React, { ReactElement } from 'react';
+import { MuiThemeProvider, StylesProvider } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core';
+import { Switch, Route } from 'react-router-dom';
+import NotFoundPage from 'pages/NotFound';
+import DefaultLayout from 'layouts/DefaultLayout';
+import routes from 'routes';
+import AccessNavigator from 'components/AccessNavigator';
+import MainPage from 'pages/MainPage';
+import SingInPage from 'pages/SignInPage';
+import SignUpPage from 'pages/SignUpPage';
+import ProfilePage from 'pages/ProfilePage';
+import ApiErrorsDialog from 'components/ApiErrorsDialog';
 
-enum SocketStatus {
-  initial = "initial",
-  open = "open",
-  error = "error",
-  close = "close",
-}
+// #5FAF2D - logo color
+const theme = createTheme({});
 
-function App() {
-  const [status, setStatus] = React.useState<SocketStatus>(
-    SocketStatus.initial
-  );
-  React.useEffect(() => {
-    const socket = new WebSocket("ws://localhost:5000");
+interface IApp {}
 
-    socket.onopen = () => setStatus(SocketStatus.open);
-    socket.onerror = () => setStatus(SocketStatus.error);
-  }, []);
-
-  return (
-    <div className="App">
-      SOCKET_STATUS:::::{status}
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App: React.FC<IApp> = (): ReactElement => (
+  <MuiThemeProvider theme={theme}>
+    <StylesProvider injectFirst>
+      <DefaultLayout>
+        <ApiErrorsDialog />
+        <AccessNavigator>
+          <Switch>
+            <Route exact path={routes.signIn()} component={SingInPage} />
+            <Route exact path={routes.signUp()} component={SignUpPage} />
+            <Route exact path={routes.profile()} component={ProfilePage} />
+            <Route exact path={routes.main()} component={MainPage} />
+            <Route component={NotFoundPage} />
+          </Switch>
+        </AccessNavigator>
+      </DefaultLayout>
+    </StylesProvider>
+  </MuiThemeProvider>
+);
 
 export default App;
