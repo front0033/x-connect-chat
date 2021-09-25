@@ -38,8 +38,8 @@ const wsSlice = createSlice({
   initialState: { messageList: [] } as IChat,
   reducers: {
     setMessage: (state, { payload: { message } }: { payload: IMessagePayload }) => {
-      const newMessage: IMessageData = JSON.parse(message);
-      state.messageList = [...state.messageList, newMessage];
+      const messages: IMessageData[] = JSON.parse(message);
+      state.messageList = [...state.messageList, ...messages];
     },
   },
 });
