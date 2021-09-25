@@ -12,19 +12,23 @@ export enum WSStatus {
   WS_DISCONNECTED = 'WS_DISCONNECTED',
 }
 
-interface IMessageData {
+export interface IMessageData {
+  chatId: string;
   userId: string;
   message: string;
   date: string;
 }
 
-export interface IChat {
-  messageList: IMessageData[];
-}
-
-interface IMessagePayload {
+export type Chat = Record<string, IMessageData[]>;
+interface IRowMessagePayload {
   message: string;
 }
+
+interface IParsedMessage {
+  chatId: string;
+  messages: Array<IMessageData>;
+}
+
 const SEND_MESSAGE_ACTION_TYPE = 'SEND_MESSAGE';
 
 export const sendMessageAction = createAction(SEND_MESSAGE_ACTION_TYPE, (message: string) => ({
@@ -35,11 +39,12 @@ export const sendMessageAction = createAction(SEND_MESSAGE_ACTION_TYPE, (message
 
 const wsSlice = createSlice({
   name: chatReducerPath,
-  initialState: { messageList: [] } as IChat,
+  initialState: { default: [] } as Chat,
   reducers: {
-    setMessage: (state, { payload: { message } }: { payload: IMessagePayload }) => {
-      const messages: IMessageData[] = JSON.parse(message);
-      state.messageList = [...state.messageList, ...messages];
+    setMessage: (state, { payload: { message } }: { payload: IRowMessagePayload }) => {
+      const { chatId, messages }: IParsedMessage = JSON.parse(message);
+      const oldMessages = state[chatId] || [];
+      state[chatId] = [...oldMessages, ...messages];
     },
   },
 });

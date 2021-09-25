@@ -11,6 +11,7 @@ import SingInPage from 'pages/SignInPage';
 import SignUpPage from 'pages/SignUpPage';
 import ProfilePage from 'pages/ProfilePage';
 import ApiErrorsDialog from 'components/ApiErrorsDialog';
+import ChatRoom from 'pages/ChatRoom';
 
 // #5FAF2D - logo color
 const theme = createTheme({});
@@ -28,6 +29,7 @@ const App: React.FC<IApp> = (): ReactElement => (
             <Route exact path={routes.signUp()} component={SignUpPage} />
             <Route exact path={routes.profile()} component={ProfilePage} />
             <Route exact path={routes.main()} component={MainPage} />
+            <Route exact path={routes.chat()} component={ChatRoom} />
             <Route component={NotFoundPage} />
           </Switch>
         </AccessNavigator>

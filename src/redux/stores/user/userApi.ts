@@ -3,8 +3,10 @@ import baseApiClient, { PROXY_URL, ResponseDataStatus } from 'api/baseApiClient'
 import X_CONNECT_LOCALSTORAGE_USER_KEY from 'components/AccessNavigator/constants';
 import { setUser } from '../userProfile/userProfileSlice';
 
+export type UserId = string;
+
 export interface User {
-  userId: string;
+  userId: UserId;
   email: string;
   avatar: string;
   date: string;
