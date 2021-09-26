@@ -5,10 +5,15 @@ import { IMessageData } from './chatSlice';
 
 type ChatId = string;
 
+interface IMember {
+  userId: UserId;
+  username: string;
+}
+
 export interface IChat {
   chatId: ChatId;
   name: string;
-  userIds: UserId[];
+  members: IMember[];
   messages: Array<IMessageData>;
 }
 

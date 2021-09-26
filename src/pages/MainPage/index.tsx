@@ -1,30 +1,30 @@
 import * as React from 'react';
 
+import { Link } from 'react-router-dom';
 import { Grid, IconButton, List, ListItem, Typography } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import { useAppSelector } from 'redux/hooks';
 import { IChat, useGetChatsByUserIdQuery } from 'redux/stores/chats/chatApi';
-import { useGetAllProfilesQuery } from 'redux/stores/userProfile/userProfileApi';
-import { IProfile } from 'redux/stores/userProfile/userProfileSlice';
+import routes from 'routes';
 
 import useStyles from './styles';
 
-const getChatName = (myUserId: string, chat: IChat, profiles: IProfile[]): string => {
-  const { name, userIds } = chat;
+const unknownChatName = 'unknown chat';
+
+const getChatName = (myUserId: string, chat: IChat): string => {
+  const { name, members } = chat;
 
   if (name) {
     return name;
   }
 
-  if (userIds.length === 2) {
-    const [otherUserName] = userIds
-      .filter((id) => id !== myUserId)
-      .map((id) => profiles.find((item) => item.user.userId === id)?.username ?? '');
+  if (members.length === 2) {
+    const [otherMember] = members.filter((mbr) => mbr.userId !== myUserId);
 
-    return otherUserName || '';
+    return otherMember ? otherMember.username : unknownChatName;
   }
 
-  return 'Чат без названия';
+  return unknownChatName;
 };
 
 const MainPage: React.FC = () => {
@@ -34,19 +34,18 @@ const MainPage: React.FC = () => {
   const userId = profile.user?.userId ?? '';
 
   const { data: userChats } = useGetChatsByUserIdQuery(userId);
-  const { data: profiles = [] } = useGetAllProfilesQuery();
 
   return (
     <Grid container direction="column" alignItems="center" className={classes.root} justifyContent="space-between">
       <List className={classes.messageList}>
         {(userChats || []).map((chat) => (
           <ListItem key={chat.chatId} className={classes.listItem}>
-            <Typography>{getChatName(userId, chat, profiles)}</Typography>
+            <Typography>{getChatName(userId, chat)}</Typography>
           </ListItem>
         ))}
       </List>
       <Grid container wrap="nowrap" alignItems="center" className={classes.textFieldContainer}>
-        <IconButton className={classes.button}>
+        <IconButton className={classes.button} component={Link} to={routes.chat()}>
           <AddIcon className={classes.icon} />
         </IconButton>
       </Grid>
